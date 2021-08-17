@@ -11,7 +11,7 @@ Since this file may contain ( not in this case ) sensitive info (like IPs or dat
 ```json
 	{
 		"env":{
-		"PORT":4435
+			"PORT":4435
 		}
 	}
 ```

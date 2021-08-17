@@ -1,7 +1,8 @@
+
 exports.idadeCalculator = (req,res,next)=>{
     let msgRetorno = "BEM VINDO"
     let status = 200
-    if(req.body.idade >= 65){
+    if(req.body.idade >= 65){ 
         msgRetorno += ", Acesso Preferencial, (todos os status deveriam ser 201 se eu estou criando)"
         status = 201
     }
