@@ -7,6 +7,7 @@ const app = express()
 const aula1Rotas = require('./api/routes/aula1')
 const userRotas = require('./api/routes/usuario')
 const rolesRoutes = require('./api/routes/role')
+const aula2Rotas = require('./api/routes/aula2')
 
 app.use(cors())
 app.use(morgan('dev'))
@@ -26,6 +27,7 @@ app.use((req,res,next)=>{
 app.use('/aula1',aula1Rotas)
 app.use('/user',userRotas)
 app.use('/roles',rolesRoutes)
+app.use('/aula2',aula2Rotas)
 
 app.use((req,res,next)=>{
     const error = new Error('Not found / Não encontrado')

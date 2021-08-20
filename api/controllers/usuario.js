@@ -24,21 +24,26 @@ exports.singUp = (req, res, next) => {
                     console.log(hash);
                     return db.query(sql`INSERT INTO users(user_role,user_email,user_name,user_password) VALUES(${role},${email},${username},${hash});`).then((resultado)=>{
                         console.log(resultado);
-                        res.status(201).json({message:"usuário criado"})
+                        const token = jwt.sign({
+                            email:hasAlready[0].user_email,
+                            userId:hasAlready[0].id,
+                            role:hasAlready[0].role_name,
+                        },
+                        process.env.JWT_KEY,
+                        {
+                            expiresIn: "5h"
+                        })
+                        res.status(200).json({
+                            message:" usuario criado",
+                            token:token
+                        })
+
+
                     }).catch((err)=>{
                         console.error(err.stack);
                         res.status(500).json({error:err})
                     })
                 }        
-                    //     console.log(result);
-                    //     res.status(201).json({message:"usuário criado"})
-                    
-                    //     console.log(err);
-                    //     res.status(500).json({error:err})
-                    
-                    // console.log(retorno);
-                    // return retorno
-            
             })
         }
     }).catch(err=>{
@@ -82,7 +87,7 @@ exports.Login = (req, res, next) => {
                     expiresIn: "5h"
                 })
                 return res.status(200).json({
-                    message:" authenticação bem-suscedida",
+                    message:" authenticação bem-sucedida",
                     token:token
                 })
         }).catch(err=>{
