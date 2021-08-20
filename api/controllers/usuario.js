@@ -22,12 +22,12 @@ exports.singUp = (req, res, next) => {
                     res.status(500).json({error:err})
                 }else{
                     console.log(hash);
-                    return db.query(sql`INSERT INTO users(user_role,user_email,user_name,user_password) VALUES(${role},${email},${username},${hash});`).then((resultado)=>{
+                    return db.query(sql`INSERT INTO users(user_role,user_email,user_name,user_password) VALUES(${role},${email},${username},${hash}); SELECT id FROM users where user_email=${email}`).then((resultado)=>{
                         console.log(resultado);
                         const token = jwt.sign({
-                            email:hasAlready[0].user_email,
-                            userId:hasAlready[0].id,
-                            role:hasAlready[0].role_name,
+                            email:email,
+                            userId:resultado,
+                            role:role,
                         },
                         process.env.JWT_KEY,
                         {
@@ -67,7 +67,7 @@ exports.Login = (req, res, next) => {
     }
 
     
-    db.query(sql`SELECT user_email,user_password,role_name,id FROM users INNER JOIN roles ON user_role=roles.id where user_email=${email} `).then((hasAlready)=>{
+    db.query(sql`SELECT user_email, user_password, role_name, u.id FROM users u INNER JOIN roles r ON user_role = r.id where user_email=${email} `).then((hasAlready)=>{
         if(hasAlready.length == 0){
             return res.status(401).json({
                 message: "Authentication failed / autenticação falhou"
